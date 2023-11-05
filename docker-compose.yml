@@ -215,11 +215,18 @@ services:
       retries: 120
 
   jupyter:
+    depends_on:
+      es01:
+        condition: service_healthy
+      es02:
+        condition: service_healthy
+      es03:
+        condition: service_healthy
     image: jupyter/base-notebook:latest
     ports:
       - "8888:8888"
     volumes:
-      - certs:/home/jovyan/certs:z
+      - certs:/home/jovyan/certs
       - ./notebooks:/home/jovyan/work
     environment:
       - JUPYTER_ENABLE_LAB=yes
